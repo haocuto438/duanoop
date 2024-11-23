@@ -9,7 +9,7 @@ import java.util.Scanner;
 
 public class DSHocSinh implements IFile{
     HocSinh dshs[];
-    int slhs;
+    static int slhs;
     int maxslhs;
     public DSHocSinh(int maxsl){ 
         this.maxslhs=maxsl;
@@ -20,6 +20,16 @@ public class DSHocSinh implements IFile{
     public int getSlhs() {
         return slhs;
     }    
+    public static HocSinh taoHS(char loai) {
+    if(loai == 'A'){
+                return new HSHoNgheo();
+            }else
+            if(loai =='B'){
+                return new HSBoiDuong();
+            }else{ 
+                return new HSThuong();
+            }
+}
     public void nhapDSHS(){ 
         Scanner sc=new Scanner(System.in);
         System.out.println("Nhap so luong hoc sinh :");
@@ -29,14 +39,7 @@ public class DSHocSinh implements IFile{
         for(int i=0;i<n;i++){ 
             System.out.println("Nhap loai hoc sinh A(hoNgheo) B(TangCuong) C(Thuong)");
              loai = sc.next().charAt(0);
-            if(loai == 'A'){
-                hs=new HSHoNgheo();
-            }else
-            if(loai =='B'){
-                hs=new HSBoiDuong();
-            }else{ 
-                hs=new HSThuong();
-            }        
+            hs=taoHS(loai);        
             hs.nhap();
            themHS(hs);
         }
@@ -56,7 +59,7 @@ public class DSHocSinh implements IFile{
     }
     public void xoaHS(String mahs) {  
     for (int i = 0; i < slhs; i++) {
-        if (dshs[i].getMaSo().equals(mahs)) {
+        if (dshs[i].getMaSo().trim().equals(mahs)) {
             for (int j = i; j < slhs - 1; j++) {
                 dshs[j] = dshs[j + 1];
             }
@@ -89,7 +92,7 @@ public class DSHocSinh implements IFile{
                 if (hs == null) continue;
                 if (hs instanceof HSHoNgheo) {
             HSHoNgheo lhs1 = (HSHoNgheo) hs;
-            bw.write("A\t" + lhs1.toString()); // hoặc định dạng riêng
+            bw.write("A\t" + lhs1.toString());
         } else if (hs instanceof HSBoiDuong) {
             HSBoiDuong lhs2 = (HSBoiDuong) hs;
             bw.write("B\t " + lhs2.toString());
@@ -111,10 +114,10 @@ public class DSHocSinh implements IFile{
          BufferedReader br = new BufferedReader(fr)) {
         
         String line;
-        slhs = 0; // Reset danh sách hiện có
+        slhs = 0; 
         
         while ((line = br.readLine()) != null) {
-            String[] txt = line.split("\t"); // Không giới hạn số phần tử
+            String[] txt = line.split("\t");
             
             if (txt.length < 2) {
                 System.out.println("Dòng dữ liệu không hợp lệ: " + line);
@@ -165,5 +168,63 @@ public class DSHocSinh implements IFile{
     } catch (Exception e) {
     }
 }
-
+    public void chinhSua(){ 
+        Scanner sc=new Scanner(System.in);
+        System.out.println("Nhap ma so can chinh sua");
+        String ma=sc.nextLine();
+        boolean kiemtra=false;
+        for(HocSinh hs:dshs){ 
+            if(hs == null) continue;
+            if(hs.getMaSo().trim().equalsIgnoreCase(ma)){ 
+                System.out.println("Ho ten moi :");
+                hs.setHoTen(sc.nextLine());
+                System.out.println("Tuoi moi");
+                hs.setTuoi(sc.nextInt());
+                sc.nextLine();
+                System.out.println("So dien thoai moi ");
+                hs.setSoDienThoai(sc.nextLine());
+                kiemtra = true;
+                break;
+            }
+        }
+        if(kiemtra == false){
+            System.out.println("Khong tim thay ma so tren :");
+        }
+    }
+    public void timKiem(){
+        Scanner sc=new Scanner(System.in);
+        System.out.println("tim kiem thong thuong (T) theo khoa (K)");
+        char loai=sc.next().charAt(0);
+        sc.nextLine();
+        boolean kiemtra=false;
+        if(loai == 'T'){ 
+            System.out.println("Nhap ma hoac ten hoc sinh can tim ");
+            String khoa=sc.nextLine().toLowerCase();
+            int i=0;
+            for(HocSinh hs:dshs){ 
+                 if(hs == null) continue;
+            if(hs.getMaSo().toLowerCase().trim().equalsIgnoreCase(khoa) || hs.getHoTen().trim().toLowerCase().equalsIgnoreCase(khoa))
+            {
+                System.out.println("Hoc sinh tim thay: ");
+                hs.xuat();
+                kiemtra = true;
+            }               
+            }
+        }else{ 
+            System.out.println("nhap tu khoa can tim theo ten hoc sinh ");
+            String khoa=sc.nextLine().toLowerCase();
+            int i=0;
+            for(HocSinh hs:dshs){ 
+                if (hs == null) continue;
+                if (hs.getHoTen().toLowerCase().contains(khoa)){
+                hs.xuat();
+                kiemtra= true;
+            }
+            }           
+        }
+        if(kiemtra == false){
+            System.out.println("Khong tim thay hoc sinh tren :");
+        }
+        
+    }
 }
