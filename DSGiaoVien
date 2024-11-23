@@ -1,0 +1,116 @@
+
+package duanoop;
+
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.util.Arrays;
+import java.util.Scanner;
+
+public class DSGiaoVien implements IFile{
+    GiaoVien[] dsgv = new GiaoVien[0];
+
+    public DSGiaoVien() {
+    }
+    
+    public GiaoVien[] getDsgv() {
+        return dsgv;
+    }
+
+    public void setDsgv(GiaoVien[] dsgv) {
+        this.dsgv = dsgv;
+    }
+
+    Scanner sc =new Scanner(System.in);
+
+    public void nhapDSGV(){
+        System.out.println("Nhap so luong lop hoc.");
+        int n = Integer.parseInt(sc.nextLine());
+        dsgv = new GiaoVien[n];
+        for(int i=0; i<n; i++){
+            GiaoVien gv = new GiaoVien();
+            gv.nhap();
+            dsgv[i] = gv;
+        }
+    }
+
+    public void xuatDSGV(){
+        for(GiaoVien gv : dsgv){
+            System.out.println(gv.toString());
+        }
+    }
+    
+    public void themGV(){
+        System.out.println("Nhap giao vien muon them:");
+        GiaoVien gv = new GiaoVien();
+        gv.nhap();
+        dsgv = Arrays.copyOf(dsgv, dsgv.length+1);
+        dsgv[dsgv.length-1] = gv;
+    }
+
+    public void xoaGV(){
+        System.out.println("Nhap ma giao vien muon xoa:");
+        String ma = sc.nextLine();
+        int index = -1;
+        for(int i=0; i<dsgv.length; i++){
+            if(dsgv[i].getMaSo().equals(ma)){
+                index = i;
+                break;
+            }
+        } 
+        if(index != -1){
+            GiaoVien gv[] = new GiaoVien[dsgv.length-1];
+            for(int i=0, j=0; i<dsgv.length; i++){
+                if(i!=index){
+                    gv[j++] = dsgv[i];
+                }
+            }
+            dsgv = gv;
+            System.out.println("Da xoa lop hoc ra khoi danh sach");
+        }
+        else
+            System.out.println("Khong tim thay ma lop muon xoa");
+    }
+
+    @Override
+    public void docFile(){
+        String st[];
+        try{
+            FileReader fr = new FileReader("GIAOVIEN.txt");
+            BufferedReader br = new BufferedReader(fr);
+            while(true){
+                String s = br.readLine();
+                if(s==null)
+                    break;
+
+                st = s.split("\t");
+                int tuoi = Integer.parseInt(st[2].trim());
+                dsgv = Arrays.copyOf(dsgv, dsgv.length+1);
+                dsgv[dsgv.length-1] = new GiaoVien(st[0], st[1], tuoi, st[3]);
+            }
+            br.close();
+            fr.close();
+        }
+        catch(Exception e){
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    public void ghiFile(){
+        try{
+            FileWriter fw = new FileWriter("GIAOVIEN.txt");
+            BufferedWriter bw = new BufferedWriter(fw);
+            for(GiaoVien gv : dsgv){
+                bw.write(gv.toString());
+                bw.newLine();
+            }
+            bw.close();
+            fw.close();
+        }
+        catch(Exception e){
+            e.printStackTrace();
+        }
+    }
+}
