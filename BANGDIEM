@@ -1,0 +1,130 @@
+
+package duanoop;
+
+import java.util.Scanner;
+import java.io.FileReader;
+import java.io.BufferedReader;
+public class BANGDIEM  {
+    private String maHS;
+    private float diem[];
+    BANGDIEM k[] = new BANGDIEM[100];
+    int sopt = 0;
+    public BANGDIEM(){
+
+    }
+    public BANGDIEM(String maHS,  float diem[]){
+        this.maHS = maHS;
+        this.diem = diem;
+    }
+    public String getMaHS(){
+        return maHS;
+    }
+   
+    public float[] getDiem(){
+        return diem;
+    }
+    public void setMaHS(String maHS){
+        this.maHS = maHS;
+    }
+    
+    public void setDiem(float diem[]){
+        this.diem = diem;
+    }
+    public void nhapDiem(){
+        Scanner sc = new Scanner(System.in);
+        System.out.println("Nhap ma hoc sinh: ");
+        setMaHS(sc.nextLine());
+        
+        System.out.println("Nhap diem: ");
+        diem = new float[5];
+        for(int i = 0; i<diem.length; i++){
+            System.out.println("Nhap diem mon " +(i+1)+":");
+            diem[i] = sc.nextFloat();
+        }
+      
+    }
+    public void xuatDiem(){
+        System.out.println("Ma hoc sinh: "+maHS);
+        System.out.println("Diem cac mon: ");
+        for(int i = 0; i<diem.length; i++){
+            System.out.println("Mon " + (i+1)+": "+diem[i]);
+        }
+        System.out.println("Diem trung binh: "+tinhDTB());
+        if(tinhDTB()>=8.5&&tinhDTB()<=10){
+            System.out.println("Xep loai: Gioi");
+        }
+        else if(tinhDTB()>=7.0&&tinhDTB()<=8.4){
+            System.out.println("Xep loai: Kha");
+        }
+        else if(tinhDTB()>=5.5&&tinhDTB()<=6.9){
+            System.out.println("Xep loai: Trung binh");
+        }
+        else if(tinhDTB()>=4.0&&tinhDTB()<=5.4){
+            System.out.println("Xep loai: yeu");
+        }
+        else{
+            System.out.println("Xep loai: Kem");
+
+        }
+
+    }
+    public double tinhDTB(){
+        float tongDiem = 0;
+        for(int i = 0; i<diem.length; i++){
+            tongDiem += diem[i];
+        }
+        return Math.round(((tongDiem / diem.length)*100.0))/100.0;
+    }
+    
+    public void docFile(){
+        try (FileReader fr = new FileReader("bangdiem.txt"); 
+            BufferedReader br = new BufferedReader(fr)) {
+            String line;
+            
+            BANGDIEM b = null;
+           
+            while ((line = br.readLine()) != null) {
+                String[] txt = line.split("\t");
+                if (txt.length < 6) {
+                    System.out.println("Dòng dữ liệu không hợp lệ: " + line);
+                    continue;
+                }
+                if(txt.length==6){
+                    String mahs =txt[0];
+                    float d[] = new float[5];
+                    int tmp = 1;
+                    for(int i = 0; i<5; i++){
+                        d[i] = Float.parseFloat(txt[tmp]);
+                        tmp++;
+                    }
+                    b = new BANGDIEM(mahs,d);
+                    k[sopt++] = b;
+                }
+                
+
+            }
+       
+    
+   } catch (Exception e) {
+   }
+    
+    }
+    public void xuatDS(){
+        for(int i = 0; i<sopt; i++){
+            k[i].xuatDiem();
+        }
+    }
+
+    public static void main(String[] args) {
+        BANGDIEM d = new BANGDIEM();
+        d.docFile();
+        d.xuatDS();
+    }
+    
+    
+
+   
+    
+   
+
+}
