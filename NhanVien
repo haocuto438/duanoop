@@ -1,0 +1,70 @@
+
+package duanoop;
+
+
+import java.util.Scanner;
+
+public class NhanVien extends Nguoi{
+    private String email;
+    private int soNgayLamViec;
+    public NhanVien(){
+    }
+    
+    public NhanVien(String maSo, String hoTen, int tuoi, String email,int soNgayLamViec){
+        super(maSo, hoTen, tuoi);
+        this.email = email;
+        this.soNgayLamViec = soNgayLamViec;
+    }
+
+    public String getHoTen() {
+        return hoTen;
+    }
+    
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public int getSoNgayLamViec() {
+        return soNgayLamViec;
+    }
+
+    public void setSoNgayLamViec(int soNgayLamViec) {
+        this.soNgayLamViec = soNgayLamViec;
+    }
+    @Override
+    public String toString(){ 
+        return super.toString() +"\t"+ email +"\t"+ soNgayLamViec;
+    }
+    @Override
+    public void nhap() {
+        super.nhap();  // Gọi phương thức nhap() của lớp Nguoi
+        Scanner sc = new Scanner(System.in);
+        System.out.println("Nhap email:");
+        setEmail(sc.nextLine());
+        System.out.println("Nhap so ngay lam viec:");
+        setSoNgayLamViec(sc.nextInt());
+    }
+
+    // Phương thức xuất thông tin nhân viên (kế thừa từ lớp Nguoi và mở rộng)
+    @Override
+    public void xuat() {
+        super.xuat();  // Gọi phương thức xuat() của lớp Nguoi
+        System.out.println("Email: " + email + "\tSo ngay lam viec: " + soNgayLamViec);
+    }
+
+    // Phương thức tính lương (giả sử mức lương cơ bản là 3000000 và mỗi ngày làm việc là 200000 VND)
+    public double tinhLuong() {
+        return soNgayLamViec * 500000;
+    }
+
+    String getHoten() {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
+    
+    
+    
+}
