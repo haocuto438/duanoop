@@ -1,0 +1,155 @@
+
+package duanoop;
+
+
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.util.Scanner;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
+
+public class DSNhanVien implements IFile{
+    NhanVien dsnv[];
+    int slnv;
+    int maxslnv;
+    public DSNhanVien(int maxslnv){
+        this.maxslnv = maxslnv;
+        dsnv = new NhanVien[maxslnv];
+        slnv = 0;
+    }
+
+    public NhanVien[] getDsnv() {
+        return dsnv;
+    }
+
+    public void setDsnv(NhanVien[] dsnv) {
+        this.dsnv = dsnv;
+    }
+
+    public int getSlnv() {
+        return slnv;
+    }
+
+    public void setSlnv(int slnv) {
+        this.slnv = slnv;
+    }
+
+    public int getMaxslnv() {
+        return maxslnv;
+    }
+
+    public void setMaxslnv(int maxslnv) {
+        this.maxslnv = maxslnv;
+    }
+    
+    public void xuatNV(){
+        for(int i = 0; i < slnv; i++){
+            dsnv[i].xuat();
+        }
+    }
+
+    public void nhapDSNV(){
+        Scanner sc = new Scanner(System.in);
+        System.out.println("Nhap so luong nhan vien: ");
+        int n = sc.nextInt();
+        sc.nextLine();
+        
+        if(n > maxslnv){
+            System.out.println("So luong nhan vien vuot qua so luong toi da.");
+            return ;
+        }
+        
+        for(int i = 0 ; i < n; i ++){
+            System.out.println("Nhap thong tin nhan vien thu " + (i+1) + ":");
+            NhanVien nv = new NhanVien();
+            nv.nhap();
+            themNV(nv);
+        }      
+    }
+    
+    public void themNV(NhanVien nv) {
+    if (maxslnv < slnv) {
+        System.out.println("Khong con cho de them nhan vien.");
+    } else {
+        dsnv[slnv] = nv;
+        slnv++;
+        }
+    }
+    
+    public void xoaNV(String manv){
+        for(int i = 0; i < slnv; i++){
+            if(dsnv[i].getMaSo().trim().equals(manv)){
+                for(int j = i; j < slnv - 1 ; j++){
+                    dsnv[j] = dsnv[j+1];
+                }
+                dsnv[slnv-1] = null;
+                slnv--;
+                System.out.println("Da xoa nhan vien voi ma so: " + manv);
+                return;
+            }
+        }
+        System.out.println("Khong tim thay nhan vien voi ma so: " + manv);
+    }
+    
+    public void xuatDSNV(){
+        for(int i = 0 ; i < slnv; i++){
+            dsnv[i].xuat();
+            System.out.println("Tien luong: " + dsnv[i].tinhLuong());
+        }
+    }
+    
+    /**
+     *
+     */
+    @Override
+    public void ghiFile() {
+        try{
+            FileWriter fw = new FileWriter("nhanvien.txt");
+            BufferedWriter bw = new BufferedWriter(fw);
+            for(int i = 0 ; i < slnv; i++){
+                
+
+                    bw.write(dsnv[i].toString());
+                    bw.newLine();
+            }
+            System.out.println("Ghi file thanh cong!");
+            bw.close();
+            fw.close();
+        } catch (Exception e) {
+        }
+    }
+
+    @Override
+    public void docFile() {
+        try (FileReader fr = new FileReader("nhanvien.txt"); 
+        BufferedReader br = new BufferedReader(fr)) {
+        String line;
+        slnv = 0; // Reset danh sách hiện có
+
+        while ((line = br.readLine()) != null) {
+            String[] txt = line.split("\t");
+            if (txt.length >= 5) {
+                String maSo = txt[0];
+                String hoTen = txt[1];
+                int tuoi = Integer.parseInt(txt[2]);
+                String email = txt[3];
+                int soNgayLamViec = Integer.parseInt(txt[4]);
+
+                NhanVien nv = new NhanVien(maSo, hoTen, tuoi, email, soNgayLamViec);
+                themNV(nv);
+            } else {
+                System.out.println("Dong du lieu khong hop le: " + line);
+            }
+        }
+        System.out.println("Doc file thanh cong!");
+    } catch (Exception e) {
+    }
+}
+
+    
+}
