@@ -4,8 +4,7 @@ import java.util.Scanner;
 
 
 public class Duanoop {
-    Scanner sc=new Scanner(System.in); 
-    
+    Scanner sc=new Scanner(System.in);     
     public static void main(String[] args) {
         Duanoop da=new Duanoop();
         da.menuchinh();
@@ -18,6 +17,7 @@ public class Duanoop {
         System.out.println("2.Nhan vien ");
         System.out.println("3.Thoi khoa bieu ");
         System.out.println("4.Lop hoc");
+        System.out.println("5.Giao vien");
         System.out.println("0.Thoat ");
     }
     public void nhapluachonchinh(){
@@ -28,7 +28,6 @@ public class Duanoop {
              switch(n){
                  case 0 -> System.out.println("Ket thuc ");
                  case 1 -> {
-                     menuhs();
                      nhapluachonhs();
                  }
                  case 2 -> {
@@ -36,12 +35,15 @@ public class Duanoop {
                      nhapluachonnv();
                  }
                  case 3 -> {
-                     menutkb();
                      nhapluachontkb();
                  }
                  case 4 -> {
                      menulh();
                      nhapluachonlh();
+                 }
+                 case 5 -> {
+                     menugv();
+                     nhapluachongv();
                  }
                  default -> System.out.println("Lua chon khong hop le ");
              }
@@ -58,13 +60,18 @@ public class Duanoop {
         System.out.println("4.Xuat danh sach hoc sinh ");
         System.out.println("5.Tim kiem hoc sinh ");   
         System.out.println("6.Sap xep hoc sinh ");
-        System.out.println("7.Ghi file ");
-        System.out.println("8.Doc file ");
+        System.out.println("7.Chinh sua thong tin ");
+        System.out.println("8.Ghi file ");
+        System.out.println("9.Doc file ");
+        System.out.println("10.Xem diem hs");
+        System.out.println("11.Hoc bong");
     }   
     public void nhapluachonhs(){
     int n;
     DSHocSinh ds=new DSHocSinh(200);
+    HOCBONG hb=new HOCBONG();
     do{
+            menuhs();
             System.out.println("--------------------------------------------------");
                 System.out.println("Nhap lua chon cua ban :");
              n=sc.nextInt();
@@ -99,15 +106,27 @@ public class Duanoop {
                  case 4 -> {
                      ds.xuatDSHS();
                  }
-                 case 5 -> System.out.println("sx hs ");
+                 case 5 -> { 
+                     ds.timKiem();
+                 }
                  case 6 -> { 
                      ds.sapXepHP();
                  }
                  case 7 -> { 
-                     ds.ghiFile();
+                     ds.chinhSua();
                  }
                  case 8 -> { 
+                     ds.ghiFile();
+                 }
+                 case 9 -> { 
                      ds.docFile();
+                     hb.docFile();
+                 }
+                 case 10 ->{ 
+                     hb.xuatDiemvaXeploai();
+                 }
+                 case 11 ->{ 
+                     hb.chiaQuy();
                  }
                  default -> System.out.println("Lua chon khong hop le ");
              }
@@ -118,26 +137,46 @@ public class Duanoop {
         System.out.println("--------------------------------------------------");
         System.out.println("Ban can gi o nhanvien ? ");
         System.out.println("0.Quay lai ");
-        System.out.println("1.Them 1 nhan vien");
-        System.out.println("2.Xoa 1 nhan vien ");
+        System.out.println("1.Doc File");
+        System.out.println("2.Ghi File ");
         System.out.println("3.Xuat danh sach nhan vien ");
-        System.out.println("4.Tim kiem nhan vien ");   
-        System.out.println("5.Sap xep nhan vien ");
+        System.out.println("4.Nhap danh sach moi ");   
+        System.out.println("5.Them nhan vien ");
+        System.out.println("6.Xoa nhan vien ");
     }   
     public void nhapluachonnv(){
         System.out.println("--------------------------------------------------");
     System.out.println("Nhap lua chon cua ban :");
     int n;
+    DSNhanVien dsnv =new DSNhanVien(200);
     do{
              n=sc.nextInt();
+             sc.nextLine();
              switch(n){
                  case 0 -> System.out.println("Quay lai ");
-                 case 1 -> System.out.println("them nv ");
-                 case 2 -> System.out.println("xoa nv ");
-                 case 3 -> System.out.println("xuat ds nv");
-                 case 4 -> System.out.println("tim kiem nv ");
-                 case 5 -> System.out.println("sx nv ");
-                 default -> System.out.println("Lua chon khong hop le ");
+                 case 1 -> { 
+                     dsnv.docFile();
+                 }
+                 case 2 -> { 
+                     dsnv.ghiFile();
+                 }
+                 case 3 -> { 
+                     dsnv.xuatDSNV();
+                 }
+                 case 4 -> { 
+                     dsnv.nhapDSNV();
+                 }
+                 case 5 -> { 
+                     NhanVien nv=new NhanVien();
+                     nv.nhap();
+                     dsnv.themNV(nv);                     
+                 }
+                 case 6 -> { 
+                    System.out.println("Nhap ma nhan vien can xoa ");
+                    String manv=sc.nextLine();
+                    dsnv.xoaNV(manv);
+                     
+                 }
              }
          }while(n != 0);
     }
@@ -146,47 +185,133 @@ public class Duanoop {
         System.out.println("--------------------------------------------------");
         System.out.println("Ban can gi o thoi khoa bieu ? ");
         System.out.println("0.Quay lai ");
-        System.out.println("1.Them 1 mon hoc ");
+        System.out.println("1.Nhap danh sach mon hoc moi ");
         System.out.println("2.Xoa 1 mon hoc ");
         System.out.println("3.Xuat thoi khoa bieu ");
+        System.out.println("4.Doc file ");
+        System.out.println("5.Ghi file ");
     }   
-    public void nhapluachontkb(){
-        System.out.println("--------------------------------------------------");
-    System.out.println("Nhap lua chon cua ban :");
+    public void nhapluachontkb(){   
     int n;
+    ThoiKhoaBieu TKB=new ThoiKhoaBieu();
     do{
+            menutkb();
+            System.out.println("Nhap lua chon cua ban :");
              n=sc.nextInt();
              switch(n){
                  case 0 -> System.out.println("Quay lai ");
-                 case 1 -> System.out.println("them mh");
-                 case 2 -> System.out.println("xoa mh ");
-                 case 3 -> System.out.println("xuat mh ");
+                 case 1 -> 
+                 {
+                    TKB.nhapTKB();
+
+                 }
+                 case 2 -> 
+                 {
+                    TKB.xoaMH();
+                    
+                 }
+                 case 3 -> 
+                 {
+                    TKB.xuatTKB();
+                    
+                 }
+                 case 4->
+                 {
+                    TKB.docFile();
+                   
+                 }
+                 case 5 ->
+                 {
+                    TKB.ghiFile();
+                    System.out.println("Thoi khoa bieu da duoc in vao file");
+                }
+
+                 
                  default -> System.out.println("Lua chon khong hop le ");
-             }
-         }while(n != 0);
+                }
     }
+         while(n != 0); }
     //Lop hoc
     public void menulh(){
         System.out.println("--------------------------------------------------");
         System.out.println("Ban can gi o Lop hoc ? ");
         System.out.println("0.Quay lai ");
-        System.out.println("1.Them 1 Lop ");
-        System.out.println("2.Xoa 1 lop ");
-        System.out.println("3.Xuat danh sach cac lop ");
-        System.out.println("4.Tim kiem lop ");   
+        System.out.println("1.Doc file ");
+        System.out.println("2.Ghi file ");
+        System.out.println("3.xuat lop ");
+        System.out.println("4.Them lop ");
+        System.out.println("5.Xoa lop"); 
+        System.out.println("6.Tim kiem lop");   
     }   
     public void nhapluachonlh(){
         System.out.println("--------------------------------------------------");
     System.out.println("Nhap lua chon cua ban :");
     int n;
+    Truong truong=new Truong();
     do{
              n=sc.nextInt();
              switch(n){
                  case 0 -> System.out.println("Quay lai ");
-                 case 1 -> System.out.println("them lop ");
-                 case 2 -> System.out.println("xoa lop ");
-                 case 3 -> System.out.println("xuat lop");
-                 case 4 -> System.out.println("tim kiem lop ");
+                 case 1 -> { 
+                     truong.docFile();
+                 }
+                 case 2 -> { 
+                     truong.ghiFile();
+                 }
+                 case 3 -> { 
+                     truong.xuatDSLH();
+                 }
+                 case 4 -> { 
+                     truong.themLOP();
+                 }
+                 case 5 -> { 
+                     truong.xoaLOP();
+                 }
+                 case 6 -> { 
+                     truong.timLOP();
+                 }
+                 default -> System.out.println("Lua chon khong hop le ");
+             }
+         }while(n != 0);
+    }
+    public void menugv(){
+        System.out.println("--------------------------------------------------");
+        System.out.println("Ban can gi o giao vien ? ");
+        System.out.println("0.Quay lai ");
+        System.out.println("1.Nhap danh sach giao vien");
+        System.out.println("2.Them 1 giao vien");
+        System.out.println("3.Xoa 1 giao vien ");
+        System.out.println("4.Xuat danh sach giao vien ");
+        System.out.println("5.Doc file ");
+        System.out.println("6.Ghi file ");
+    }   
+    public void nhapluachongv(){
+        System.out.println("--------------------------------------------------");
+        int n;
+        DSGiaoVien gv = new DSGiaoVien();
+        do{
+        System.out.println("Nhap lua chon cua ban :");
+             n=sc.nextInt();
+             switch(n){
+                 case 0 -> System.out.println("Quay lai ");
+                 case 1 ->{ System.out.println("nhap danh sach giao vien ");
+                            gv.nhapDSGV();
+                        }
+                 case 2 ->{ System.out.println("them giao vien ");
+                            gv.themGV();
+                        }
+                 case 3 -> {System.out.println("xoa giao vien");
+                            gv.xoaGV();
+                        }
+                 case 4 -> {System.out.println("xuat danh sach giao vien ");
+                            gv.xuatDSGV();
+                        }
+                 case 5 ->{System.out.println("doc file "); 
+                            gv.docFile();
+                    }
+                 case 6 ->{System.out.println("ghi file "); 
+                        gv.ghiFile();
+                    }  
                  default -> System.out.println("Lua chon khong hop le ");
              }
          }while(n != 0);
