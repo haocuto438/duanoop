@@ -1,0 +1,119 @@
+
+package duanoop;
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.util.Scanner;
+
+public class HOCBONG {
+    private double tongQuyHocBong = 1000000;
+    BANGDIEM k[] = new BANGDIEM[100];
+    int soluonghs = 0;
+    String mahs[] = new String[100];
+    int sohs = 0;
+    private double hocbong = (1.0/4)*(tongQuyHocBong);
+    public HOCBONG(){
+
+    }
+    public HOCBONG(int tongQuyHocBong){
+        this.tongQuyHocBong = tongQuyHocBong;
+        
+    }
+    
+    public double getTongQuyHocBong(){
+        return tongQuyHocBong;
+    }
+    public double getHocbong(){
+        return hocbong;
+    }
+    
+    
+    public void setTongQuyHocBong(double tongQuyHocBong){
+        Scanner sc = new Scanner(System.in);
+        System.out.println("Nhap tong quy hoc bong: ");
+        tongQuyHocBong = sc.nextDouble();
+        this.tongQuyHocBong = tongQuyHocBong;
+    }
+
+    public void docFile(){
+        try (FileReader fr = new FileReader("bangdiem.txt"); 
+            BufferedReader br = new BufferedReader(fr)) {
+            String line;
+            
+            BANGDIEM b = null;
+           
+            while ((line = br.readLine()) != null) {
+                String[] txt = line.split("\t");
+                if (txt.length < 6) {
+                    System.out.println("Dòng dữ liệu không hợp lệ: " + line);
+                    continue;
+                }
+                if(txt.length==6){
+                    String mahs =txt[0];
+                    float d[] = new float[5];
+                    int tmp = 1;
+                    for(int i = 0; i<5; i++){
+                        d[i] = Float.parseFloat(txt[tmp]);
+                        tmp++;
+                    }
+                    b = new BANGDIEM(mahs,d);
+                    k[soluonghs++] = b;
+                }
+                
+
+            }
+       
+    
+   } catch (Exception e) {
+   }
+    
+    }
+public void sapxepDiem(){
+    for(int i = 0; i<soluonghs-1; i++){
+        for(int j = i + 1; j<soluonghs;j++){
+            if(k[i].tinhDTB()<k[j].tinhDTB()){
+                BANGDIEM tmp;
+                tmp = k[i];
+                k[i] = k[j];
+                k[j] = tmp;
+            }
+        }
+    }
+    
+    
+}
+
+public void xuatDiemvaXeploai(){
+    for(int i = 0; i<soluonghs; i++){
+            k[i].xuatDiem();
+        }
+}
+public void chiaQuy(){
+    sapxepDiem();
+    for(int i = 0; i<soluonghs; i++){
+        if(k[i].tinhDTB()>=8.5&&tongQuyHocBong!=0){
+            mahs[sohs++] = k[i].getMaHS();
+            tongQuyHocBong = tongQuyHocBong - hocbong;
+        }
+    }
+    System.out.println("Nhung hoc sinh duoc cap hoc bong: ");
+    for(int i = 0; i<sohs; i++){
+        System.out.println(mahs[i]+" duoc cap hoc bong tri gia: "+hocbong+"d");
+    }
+    System.out.println("Tong quy hoc bong con lai: "+tongQuyHocBong);
+
+    
+}
+
+
+
+
+    public static void main(String args[]){
+        HOCBONG m = new HOCBONG();
+        m.docFile();
+        m.xuatDiemvaXeploai();
+        m.chiaQuy();
+
+
+    }
+
+}
