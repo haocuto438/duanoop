@@ -1,0 +1,211 @@
+
+package duanoop;
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.util.Arrays;
+import java.util.Scanner;
+
+public class Truong implements IFile{
+    LopHoc dslh[] = new LopHoc[0];
+
+    Scanner sc =new Scanner(System.in);
+
+    public void nhapDSLH(){
+        System.out.println("Nhap so luong lop hoc.");
+        int n = Integer.parseInt(sc.nextLine());
+        dslh = new LopHoc[n];
+        for(int i=0; i<n; i++){
+            LopHoc lh = new LopHoc();
+            lh.nhapLop();
+            dslh[i] = lh;
+        }
+    }
+
+    @Override
+    public void docFile(){
+        String st[];
+        try{
+            FileReader fr = new FileReader("LOPHOC.txt");
+            BufferedReader br = new BufferedReader(fr);
+            while(true){
+                String s = br.readLine();
+                if(s==null)
+                    break;
+                st = s.split(" ");
+
+                int slhs = Integer.parseInt(st[2]);
+                String mahs[] = new String[slhs];
+                for(int i=0; i<slhs; i++){
+                    mahs[i] = st[3+i]; 
+                }
+
+                int slmh = Integer.parseInt(st[3+slhs]);
+                String mamh[] = new String[slmh];
+                for(int i=0; i<slmh; i++){
+                    mamh[i] =  st[4+slhs+i];
+                }
+
+                dslh = Arrays.copyOf(dslh, dslh.length+1);
+                dslh[dslh.length-1] = new LopHoc(st[0], st[1], slhs, mahs, slmh,  mamh);
+            }
+            br.close();
+            fr.close();
+        }
+        catch(Exception e){
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    public void ghiFile(){
+        try{
+            FileWriter fw = new FileWriter("LOPHOC.txt");
+            BufferedWriter bw = new BufferedWriter(fw);
+            /* 
+            for(LopHoc lh : dslh){
+                //malop, magv
+                bw.write(lh.getMaLop() + " " + lh.getMaGVCN()+ " ");
+                //slhs
+                bw.write(lh.getSlhs() + " ");
+                //ma cac hs
+                for(String mahs : lh.getMaHS()){
+                        bw.write(mahs + " ");
+                }
+                //slmh
+                bw.write(lh.getSlmh() + " ");  
+                //ma cac mh
+                for (String mamh : lh.getMaMH()) {
+                    bw.write(mamh + " ");  
+                }
+
+                bw.newLine();
+            }*/
+            for(LopHoc lh : dslh){
+                bw.write(lh.toString());
+                bw.newLine();
+            }
+
+            bw.close();
+            fw.close();
+        }
+        catch(Exception e){
+            e.printStackTrace();
+        }
+
+    }
+
+    public void xuatDSLH(){
+        for(LopHoc lh : dslh){
+            //lh.xuatLop();
+            System.out.println(lh.toString());
+        }
+    }
+    
+    public void themLOP(){
+        System.out.println("Nhap lop hoc muon them:");
+        LopHoc lh = new LopHoc();
+        lh.nhapLop();
+        dslh = Arrays.copyOf(dslh, dslh.length+1);
+        dslh[dslh.length-1] = lh;
+    }
+
+    public void xoaLOP(){
+        System.out.println("Nhap ma lop hoc muon xoa:");
+        String ma = sc.nextLine();
+        int index = -1;
+        for(int i=0; i<dslh.length; i++){
+            if(dslh[i].getMaLop().equals(ma)){
+                index = i;
+                break;
+            }
+        }
+        
+        if(index != -1){
+            LopHoc lh[] = new LopHoc[dslh.length-1];
+            for(int i=0, j=0; i<dslh.length; i++){
+                if(i!=index){
+                    lh[j++] = dslh[i];
+                }
+            }
+            dslh = lh;
+            System.out.println("Da xoa lop hoc ra khoi danh sach");
+        }
+        else
+            System.out.println("Khong tim thay ma lop muon xoa");
+    }
+
+    public void timLOP(){
+        System.out.println("Nhap ma lop hoc muon tim:");
+        String ma = sc.nextLine();
+        boolean f = false;
+        for(int i=0; i<dslh.length; i++){
+            if(dslh[i].getMaLop().equals(ma)){
+                f = true;
+                System.out.println(dslh[i].toString());
+                break;
+            }
+        }
+        if(!f)
+            System.out.println("Khong tim thay lop hoc "+ma);
+    }
+    
+/*  //xuat chi tiet danh sach hoc sinh
+    public GiaoVien timGV(String mahs, DSGiaoVien ds){
+        for(GiaoVien gv : ds.dsgv){
+            if(gv != null && gv.getMaSo().equals(mahs)){
+                return gv;
+            }
+        }
+        return null;
+    }
+
+    public HocSinh timHS(String mahs, DSHocSinh ds){
+        for(HocSinh hs : ds.dshs){
+            if(hs != null && hs.getMaSo().trim().equals(mahs.trim())){
+                return hs;
+            }
+        }
+        return null;
+    }
+
+    public MonHoc timMH(String mamh, ThoiKhoaBieu tkb){
+        for(MonHoc mh : tkb.dsmh){
+            if(mh != null && mh.getMaMon().trim().equals(mamh.trim())){
+                return mh;
+            }
+        }
+        return null;
+    }
+
+    public void chitietLH(){
+        DSGiaoVien dsgv = new DSGiaoVien();
+        dsgv.docFile();
+        DSHocSinh dshs = new DSHocSinh(20);
+        dshs.docFile();
+        //ThoiKhoaBieu tkb = new ThoiKhoaBieu();
+        for(LopHoc lh : dslh){
+            System.out.println("Mã lớp: " + lh.getMaLop());
+            System.out.println("Giáo viên chủ nhiệm: ");
+            // for(GiaoVien gv : dsgv.dsgv){
+            //     System.out.println(timGV(lh.getMaGVCN(), dsgv));
+            // }
+            
+            System.out.println("Số lượng học sinh: " + lh.getSlhs());
+            System.out.println("Danh sách học sinh: ");
+            for(String mahs : lh.getMaHS()){
+                HocSinh hs = timHS(mahs, dshs);
+                System.out.println(hs.toString());
+            }
+            System.out.println("Số lượng môn học: " + lh.getSlmh());
+            System.out.print("Danh sách môn học: ");
+            // for (String mh : lh.maMH) {
+            //     MonHoc mh = timMH(mh, tkb);
+            //     mh.toString();
+            // }
+            System.out.println("\n---------------------------------------------");
+        }
+    }*/
+}
+
