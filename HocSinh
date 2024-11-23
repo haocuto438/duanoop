@@ -26,11 +26,13 @@ public abstract class HocSinh extends Nguoi{
         System.out.println("Nhap so dien thoai ");
         setSoDienThoai(sc.nextLine());
     }
-        
+    @Override
+    public void xuat(){
+        super.xuat();
+    }   
     @Override
     public String toString() {
         return super.toString()+"\t"+soDienThoai; 
     }
     public abstract double tinhHocPhi();
 }
-
