@@ -1,12 +1,11 @@
 
 package duanoop;
-
 import java.util.Scanner;
-public class MonHoc {
+public class MonHoc  {
     private String maMon;
     private String tenMon;
     private int soTiet;
-
+   
     public MonHoc() {
     }
 
@@ -31,7 +30,9 @@ public class MonHoc {
     public void setMaMon(String maMon) {
         this.maMon = maMon;
     }
-
+public String toString(){ 
+    return maMon +"\t"+ tenMon +"\t" +soTiet;
+}
     public void setSoTiet(int soTiet) {
         this.soTiet = soTiet;
     }
@@ -51,7 +52,11 @@ public class MonHoc {
         sc.nextLine();
     }     
     public void xuatMH(){
+       
         System.out.println("ma mon :"+maMon +"\nten mon :"+tenMon+"\nso tiet :"+soTiet);
-    }
-    
+    }   
 }
+
+    
+        
+    
