@@ -6,11 +6,10 @@ public class GiaoVien extends Nguoi implements ILuong{
 
     public GiaoVien() {
     }
-    public GiaoVien(String email, String maSo, String hoTen, int tuoi) {
+    public GiaoVien(String maSo, String hoTen, int tuoi,String email) {
         super(maSo, hoTen, tuoi);
         this.email = email;
     }
-
     public String getEmail() {
         return email;
     }
@@ -25,7 +24,7 @@ public class GiaoVien extends Nguoi implements ILuong{
     }
     @Override
     public String toString(){ 
-        return super.toString()+"\nemail :"+email;
+        return super.toString()+"\t"+email;
     }            
 
     @Override
