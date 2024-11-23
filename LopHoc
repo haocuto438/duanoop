@@ -1,49 +1,131 @@
 
 package duanoop;
+import java.util.Scanner;
 public class LopHoc {
-    GiaoVien gv=new GiaoVien();
-    DSHocSinh dshs =new DSHocSinh(40);
-    ThoiKhoaBieu tkb=new ThoiKhoaBieu();
-    public GiaoVien getGv() {
-        return gv;
+    String maLop;
+    String maGVCN;
+    int slhs;
+    String maHS[];
+    String maMH[];
+    int slmh;
+
+    Scanner sc = new Scanner(System.in);
+    public LopHoc(){
     }
 
-    public void setGv(GiaoVien gv) {
-        this.gv = gv;
-    }
-
-    public DSHocSinh getDshs() {
-        return dshs;
-    }
-    public void setDshs(DSHocSinh dshs) {
-        this.dshs = dshs;
-    }
-
-    public ThoiKhoaBieu getTkb() {
-        return tkb;
-    }
-    public void setTkb(ThoiKhoaBieu tkb) {
-        this.tkb = tkb;
+    public LopHoc(String maLop, String maGVCN, int slhs, String maHS[], int slmh, String maMH[]){
+        this.maLop = maLop;
+        this.maGVCN = maGVCN;
+        this.slhs = slhs;
+        this.maHS = maHS;
+        this.slmh = slmh;
+        this.maMH = maMH;
     }
     
+    public String getMaLop() {
+        return maLop;
+    }
+
+    public void setMaLop(String maLop) {
+        this.maLop = maLop;
+    }
+
+    public String getMaGVCN() {
+        return maGVCN;
+    }
+
+    public void setMaGVCN(String maGVCN) {
+        this.maGVCN = maGVCN;
+    }
+
+    public String[] getMaHS() {
+        return maHS;
+    }
+
+    public void setMaHS(String[] maHS) {
+        this.maHS = maHS;
+    }
+
+    public String[] getMaMH() {
+        return maMH;
+    }
+
+    public void setMaMH(String[] maMH) {
+        this.maMH = maMH;
+    }
     
+    public int getSlhs() {
+        return slhs;
+    }
+
+    public void setSlhs(int slhs) {
+        this.slhs = slhs;
+    }
+
+    public int getSlmh() {
+        return slmh;
+    }
+
+    public void setSlmh(int slmh) {
+        this.slmh = slmh;
+    }
+
     public void nhapLop(){
-        System.out.println("Nhap giao vien chu nhiem :");
-        gv.nhap();
-        System.out.println("Nhap danh sach hoc sinh :");
-        dshs.nhapDSHS();  
-        System.out.println("Nhap thoi khoa bieu :");
-        tkb.nhapTKB();
+        System.out.println("Nhap ma lop :");
+        maLop = sc.nextLine();
+        System.out.println("Nhap ma giao vien chu nhiem :");
+        maGVCN = sc.nextLine();
+        System.out.println("Nhap so luong hoc sinh : ");
+        slhs = Integer.parseInt(sc.nextLine());
+        System.out.println("Nhap danh sach ma hoc sinh :");
+        maHS = new String[slhs];
+        for(int i = 0; i<slhs; i++){
+            maHS[i] = sc.nextLine();
+        }
+        System.out.println("Nhap so luong mon hoc :");
+        slmh = Integer.parseInt(sc.nextLine());
+        System.out.println("Nhap danh sach ma mon hoc : ");
+        maMH = new String[slmh];
+        for(int i=0; i<slmh; i++){
+            maMH[i] = sc.nextLine();
+        }
+    }  
+
+    // public void xuatLop() {
+    //     System.out.println("Mã lớp: " + maLop);
+    //     System.out.println("Mã giáo viên chủ nhiệm: " + maGVCN);
+    //     System.out.println("Số lượng học sinh: " + slhs);
+    //     System.out.print("Danh sách mã học sinh: ");
+    //     for (String hs : maHS) {
+    //         System.out.print(hs + " ");
+    //     }
+    //     System.out.println("\nSố lượng môn học: " + slmh);
+    //     System.out.print("Danh sách mã môn học: ");
+    //     for (String mh : maMH) {
+    //         System.out.print(mh + " ");
+    //     }
+    //     System.out.println("\n---------------------------------------------");
+    // }
+
+    public String ghimaHS(){
+        StringBuilder s = new StringBuilder();
+        for (String hs : getMaHS()) {
+            s.append(" ").append(hs);
+        }
+        return s.toString();
     }
-    public void xuatLop(){
-       System.out.println("------------------------");
-       System.out.println("Giao vien chu nhiem :");
-       gv.xuat();
-       System.out.println("------------------------");
-       System.out.println("Danh sach hoc sinh ");
-       dshs.xuatDSHS();
-       System.out.println("------------------------");
-       System.out.println("Danh sach hoc sinh :");
-       tkb.xuatTKB();
+
+    public String ghimaMH(){
+        StringBuilder s = new StringBuilder();
+        for (String mh : getMaMH()) {
+            s.append(" ").append(mh);
+        }
+        return s.toString();
+    }
+
+    @Override
+    public String toString() {
+        return maLop +" "+ maGVCN +" "+ slhs + ghimaHS() +" "+ slmh + ghimaMH();
     }
 }
+
