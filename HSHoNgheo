@@ -1,3 +1,6 @@
+
+package duanoop;
+
 public class HSHoNgheo extends HocSinh{
     private char ho;
 
@@ -31,6 +34,13 @@ public class HSHoNgheo extends HocSinh{
             i++;
         }while(h != 'N' && h != 'C');
     }
+    public static String vietHo(char ho){ 
+        if(ho =='N')
+            return "Ngheo";
+        else { 
+            return "Can Ngheo";
+        }
+    }
     @Override
     public double tinhHocPhi(){
         if(ho =='N')
@@ -42,5 +52,10 @@ public class HSHoNgheo extends HocSinh{
     public String toString(){
         return super.toString()+"\t"+ho+"\t"+tinhHocPhi();
     }
+    @Override
+        public void xuat(){ 
+            super.xuat();
+            System.out.println("ho gia dinh " +  vietHo(ho)+ "\thoc phi :"+tinhHocPhi() );
+        }
     
 }
