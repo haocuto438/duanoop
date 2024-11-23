@@ -1,3 +1,6 @@
+
+package duanoop;
+
 public class HSBoiDuong extends HocSinh{
     private int soMonBoiDuong;
 
@@ -31,4 +34,9 @@ public class HSBoiDuong extends HocSinh{
         public String toString(){
         return super.toString()+"\t"+soMonBoiDuong+"\t"+tinhHocPhi();
     }    
+        @Override
+        public void xuat(){ 
+            super.xuat();
+            System.out.println("so mon boi duong :" +soMonBoiDuong + "\thoc phi :"+tinhHocPhi() );
+        }
 }
