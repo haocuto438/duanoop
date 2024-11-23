@@ -1,21 +1,25 @@
 
 package duanoop;
 
+
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.FileReader;
+import java.io.FileWriter;
 import java.util.Scanner;
 
-public class ThoiKhoaBieu {
+public class ThoiKhoaBieu implements IFile{
     MonHoc dsmh[];
     int slmh;
 
     public ThoiKhoaBieu() {
-        dsmh=new MonHoc[7];
+        dsmh=new MonHoc[20];
         slmh=0;
     }
     public void nhapTKB(){
         Scanner sc=new Scanner(System.in);
         System.out.println("Nhap so luong mon hoc :");
         int n=sc.nextInt();
-        sc.nextLine();
         for(int i=0;i<n;i++){
             MonHoc mh=new MonHoc();
             mh.nhapMH();
@@ -23,7 +27,7 @@ public class ThoiKhoaBieu {
         }
     }
     public void themMH(MonHoc mh){
-        if(slmh>7){
+        if(slmh>200){
             System.out.println("Lop nay da du mon , khong the them :");
         }else{
             dsmh[slmh]=mh;
@@ -31,19 +35,89 @@ public class ThoiKhoaBieu {
         }
     }
     public void xuatTKB(){
+        if(slmh!=0)
+        {
         for(int i=0;i<slmh;i++){
             dsmh[i].xuatMH();
+            System.out.print("\n");
+        }
+        }
+        else{
+            System.out.println("thoi khoa bieu khong co mon hoc nao ca");
         }           
     }
-    public void xoaMH(String mamh){
+    public void xoaMH(){
+        String mamh;
+        Scanner sc= new Scanner(System.in);
+        System.out.print("nhap ma mon can xoa:");
+        mamh=sc.nextLine();
         for(int i=0;i<slmh;i++){
-            if(dsmh[i].getMaMon().equals(mamh)){
-                dsmh[i]=dsmh[i+1];
+            if(dsmh[i].getMaMon().trim().equals(mamh)){
+            for(int j=i;j<slmh;j++)
+            {
+                dsmh[j]=dsmh[j+1];
             }
-            dsmh[slmh-1]=null;
-            slmh--;
+            System.out.println("--------------------------------------------------");
+            System.out.println("--------------------------------------------------");
             System.out.println("da xoa mon hoc voi ma mon "+mamh);
+            slmh--;
+            return;
+            
         }
-        System.out.println("Khong tim thay mon hoc ");
+        
+    }
+    System.out.println("--------------------------------------------------");
+    System.out.println("--------------------------------------------------");
+    System.out.println("khong ton tai mon nay");
+    }
+    @Override
+    public void docFile(){
+        try {
+            
+        String line;
+        FileReader fis1=new FileReader("KQTKB.txt");
+        BufferedReader br1=new  BufferedReader(fis1);
+        while ((line = br1.readLine()) != null) {
+            String[] txt = line.split("\t");
+            
+            if (txt.length < 3) {
+                System.out.println("Dòng dữ liệu không hợp lệ: " + txt.length);
+                continue;
+            }
+            String mm=txt[0];
+            String tm=txt[1];
+            int st = Integer.parseInt(txt[2]);
+            MonHoc mh=new MonHoc(mm,tm,st);
+            if(mh!=null){ 
+                themMH(mh);
+            }
+        } 
+        fis1.close();
+        br1.close();
+    } 
+    catch (Exception e) {e.printStackTrace();
+        System.out.println("file TKB bi loi " + e.getMessage());
+    }
+        
+    
+    
+
+    }
+    @Override
+    public void ghiFile(){
+        try {
+            FileWriter fw= new FileWriter("KQTKB.txt");
+        BufferedWriter bw = new BufferedWriter(fw);
+        for(int i=0;i<slmh;i++)
+        {
+            bw.write(dsmh[i].toString());
+            bw.newLine();
+         
+        }
+        bw.close();
+        }
+         catch (Exception e) {}       
     }
 }
+  
+
